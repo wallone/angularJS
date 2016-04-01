@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html ng-app ="emsApp">
+	<head>
+		<title>Employee Management System</title>
+         <link rel="stylesheet" type="text/css" href="css/test.css">
+
+		<script
+			src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js">
+		</script>
+        <script type="text/javascript">
+        var emsApp = angular.module('emsApp',[]);
+         emsApp.controller('EmployeeCtrl',function($scope){
+            $scope.people = [
+                {last: "Towler", first: "Mark", position: "Founder & CEO", prevcompany: "Previous 1", company: "Current 1", salary: 10000,school: "OU"},
+                {last: "Clinton", first: "Heath", position: "President", prevcompany: "Previous 2", company: "Current 2", salary: 10001,school: "OSU"},
+                {last: "Chase", first: "Stan", position: "COO", prevcompany: "Previous 3", company: "Current 3", salary: 10001,school: "SNU"},
+                {last: "Kempton", first: "Shane", position: "CTO", prevcompany: "Previous 4", company: "Current 4", salary: 10001,school: "UCO"}
+
+
+            ];
+
+            $scope.addEmployee = function() {
+                $scope.people.push(
+                    {last: $scope.addLast, first: $scope.addFirst, position: $scope.addPosition, prevcompany: $scope.addPrevCompany, company: $scope.addCompany, salary: $scope.addSalary,school: $scope.addSchool}
+                );
+            }
+            $scope.deleteEmployee = function() {
+                $scope.people.pop(
+                    {last: $scope.addLast, first: $scope.addFirst, position: $scope.addPosition, prevcompany: $scope.addPrevCompany, company: $scope.addCompany, salary: $scope.addSalary,school: $scope.addSchool}
+                );
+            }
+            $scope.lessThan = function(actual,expected){       
+                if(actual <= expected)
+                    return true;
+
+                return false;        
+            };
+        });
+        </script>
+	</head>
+	<body>  
+        <div ng-controller="EmployeeCtrl">
+            <form novalidate>
+            <table>
+                Sort By&nbsp;<select ng-model="orderProp">
+                  <option value="last">Name</option>
+                  <option value="school">Alma mater</option>
+                </select>
+                <thead><th>Last</th><th>First</th><th>Position</th><th>Prev. Employment</th><th>Company</th><th>Salary</th><th>Alma Mater</th></thead>
+                <tbody>
+                    <!--Uncomment each line below for different filters-->
+                    <!-- <tr ng-repeat="person in people">-->
+                    <!-- <tr ng-repeat="person in people | filter:{last:'l'} "> -->
+                    <!-- <tr ng-repeat="person in people | orderBy:'last' "> -->
+                    <!-- <tr ng-repeat="person in people | filter:{salary:10001}:lessThan "> -->
+                    <tr ng-repeat="person in people | filter:{salary:10001}:lessThan | orderBy: orderProp">
+                        <td>{{ person.last| uppercase }}</td>
+                        <td>{{ person.first}}</td>
+                        <td>{{ person.position }}</td>
+                        <td>{{ person.prevcompany }}</td>  
+                        <td>{{ person.company }}</td>  
+                        <td>{{ person.salary | currency: "USD$"}}</td>  
+                        <td>{{ person.school }}</td>                        
+                    </tr>
+                    <tr>
+                        <td><input ng-model="addLast" type="text" placeholder="Last" ng-minlength = "2" ng-maxlength = "20"/></td>
+                        <td><input ng-model="addFirst" type="text" placeholder="First" /></td>
+                        <td><input ng-model="addPosition" type="text" placeholder="Position" /></td>
+                        <td><input ng-model="addPrevCompany" type="text" placeholder="PrevCompany" /></td>
+                        <td><input ng-model="addCompany" type="text" placeholder="Company" /></td>
+                        <td><input ng-model="addSalary" type="number" placeholder="Salary" /></td>
+                        <td><input ng-model="addSchool" type="text" placeholder="Alma Mater" /></td>
+
+
+
+                    </tr>    
+                    <tr>
+                        <td><button ng-click="addEmployee()">Add New Employee</button></td>
+                        <td><button ng-click="deleteEmployee()">Remove Employee</button></td>  
+                    </tr>                  
+                </tbody>
+            </table>
+        </form>
+        </div>
+	</body>
+</html>
